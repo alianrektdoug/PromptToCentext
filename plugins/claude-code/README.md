@@ -16,26 +16,28 @@
 
 ## 🚀 安裝
 
-### 方法 1：從 GitHub 安裝（推薦）
+### 快速安裝（推薦）
+
+在 Claude Code 中執行：
 
 ```bash
-# 在 Claude Code 中執行
 /plugin install https://github.com/alianrektdoug/PromptToCentext/tree/master/plugins/claude-code
 ```
 
-### 方法 2：從本地安裝
-
-如果您已 clone 此 repository：
+安裝完成後重啟 Claude Code，然後：
 
 ```bash
-# 使用絕對路徑
-/plugin install C:\Users\YOUR_USERNAME\Desktop\github\PromptToCentext\src\plugins\claude-code
+# 驗證安裝
+/plugin list
 
-# 或使用相對路徑（從工作目錄）
-/plugin install ./PromptToCentext/src/plugins/claude-code
+# 新增 API Key
+/prompt-keys add YOUR_GEMINI_API_KEY
+
+# 測試轉換
+/convert 如何學習 JavaScript？
 ```
 
-> ⚠️ **注意**：路徑必須使用完整的絕對路徑或正確的相對路徑
+> 💡 **遇到安裝問題？** 請查看詳細的 [安裝疑難排解指南](INSTALL.md)
 
 ### 安裝依賴
 
