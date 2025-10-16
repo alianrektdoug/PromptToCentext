@@ -40,3 +40,9 @@ coverage/
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
+
+# Plugin data (API keys and sensitive data)
+src/plugins/claude-code/data/
+plugins/claude-code/data/
+**/data/api-keys.json
+**/data/keys.json

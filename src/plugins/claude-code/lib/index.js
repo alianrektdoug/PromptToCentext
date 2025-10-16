@@ -6,12 +6,12 @@
 const fs = require('fs').promises;
 const path = require('path');
 const fetch = require('node-fetch');
+const UnifiedApiKeyManager = require('./api-key-manager');
 
 class PromptToContextPlugin {
     constructor() {
         this.config = null;
-        this.apiKeys = [];
-        this.currentKeyIndex = 0;
+        this.apiKeyManager = new UnifiedApiKeyManager();
         this.baseDir = path.join(__dirname, '..');
         this.initialized = false;
     }
@@ -31,8 +31,8 @@ class PromptToContextPlugin {
             // 建立必要目錄
             await this.ensureDirectories();
 
-            // 載入 API Keys
-            await this.loadApiKeys();
+            // 初始化 API Key 管理器
+            await this.apiKeyManager.initialize();
 
             this.initialized = true;
             console.log('[PromptToContext] Plugin 初始化完成');
@@ -68,87 +68,22 @@ class PromptToContextPlugin {
     }
 
     /**
-     * 載入 API Keys
-     */
-    async loadApiKeys() {
-        const keysPath = path.join(this.baseDir, this.config.storage.apiKeysFile);
-
-        try {
-            const data = await fs.readFile(keysPath, 'utf-8');
-            const keysData = JSON.parse(data);
-            this.apiKeys = keysData.keys || [];
-            console.log(`[PromptToContext] 已載入 ${this.apiKeys.length} 組 API Keys`);
-        } catch (error) {
-            // 檔案不存在，建立空檔案
-            this.apiKeys = [];
-            await this.saveApiKeys();
-        }
-    }
-
-    /**
-     * 儲存 API Keys
-     */
-    async saveApiKeys() {
-        const keysPath = path.join(this.baseDir, this.config.storage.apiKeysFile);
-        const data = {
-            keys: this.apiKeys,
-            updatedAt: new Date().toISOString()
-        };
-
-        await fs.writeFile(keysPath, JSON.stringify(data, null, 2));
-    }
-
-    /**
-     * 新增 API Key
+     * 新增 API Key（委派給統一管理器）
      */
     async addApiKey(apiKey) {
-        if (!apiKey || typeof apiKey !== 'string') {
-            throw new Error('API Key 不可為空');
+        const result = await this.apiKeyManager.addKey(apiKey);
+        if (!result.success) {
+            throw new Error(result.error);
         }
-
-        // 驗證格式
-        if (!apiKey.startsWith('AIza')) {
-            throw new Error('API Key 格式錯誤（應以 AIza 開頭）');
-        }
-
-        // 檢查重複
-        if (this.apiKeys.some(k => k.key === apiKey)) {
-            throw new Error('此 API Key 已存在');
-        }
-
-        // 檢查數量限制
-        if (this.apiKeys.length >= this.config.limits.maxApiKeys) {
-            throw new Error(`最多只能新增 ${this.config.limits.maxApiKeys} 組 API Keys`);
-        }
-
-        // 新增
-        this.apiKeys.push({
-            key: apiKey,
-            status: 'active',
-            addedAt: new Date().toISOString(),
-            lastUsed: null,
-            errorCount: 0
-        });
-
-        await this.saveApiKeys();
         console.log('[PromptToContext] API Key 已新增');
+        return result;
     }
 
     /**
-     * 取得可用的 API Key
+     * 取得可用的 API Key（委派給統一管理器）
      */
     getNextApiKey() {
-        const activeKeys = this.apiKeys.filter(k => k.status === 'active');
-
-        if (activeKeys.length === 0) {
-            return null;
-        }
-
-        // 輪替
-        const key = activeKeys[this.currentKeyIndex % activeKeys.length];
-        this.currentKeyIndex++;
-
-        return key;
+        return this.apiKeyManager.getNextKey();
     }
 
     /**
@@ -213,9 +148,7 @@ class PromptToContextPlugin {
             const output = result.candidates[0].content.parts[0].text.trim();
             const duration = Date.now() - startTime;
 
-            // 更新 Key 使用狀態
-            keyObj.lastUsed = new Date().toISOString();
-            await this.saveApiKeys();
+            // Key 使用狀態已由統一管理器自動更新
 
             // 記錄歷史
             await this.addHistory({
@@ -240,12 +173,11 @@ class PromptToContextPlugin {
         } catch (error) {
             const duration = Date.now() - startTime;
 
-            // 記錄錯誤
-            keyObj.errorCount++;
-            if (keyObj.errorCount >= 3) {
-                keyObj.status = 'error';
+            // 標記 Key 錯誤（委派給統一管理器）
+            if (keyObj && keyObj.id) {
+                const errorType = this.detectErrorType(error);
+                await this.apiKeyManager.markKeyError(keyObj.id, errorType);
             }
-            await this.saveApiKeys();
 
             // 記錄歷史
             await this.addHistory({
@@ -370,24 +302,27 @@ class PromptToContextPlugin {
     }
 
     /**
-     * 列出所有 API Keys
+     * 列出所有 API Keys（委派給統一管理器）
      */
     listApiKeys() {
-        return this.apiKeys.map(k => ({
-            key: this.maskApiKey(k.key),
-            status: k.status,
-            addedAt: k.addedAt,
-            lastUsed: k.lastUsed,
-            errorCount: k.errorCount
-        }));
+        return this.apiKeyManager.getAllKeys();
     }
 
     /**
-     * 遮蔽 API Key
+     * 偵測錯誤類型
      */
-    maskApiKey(key) {
-        if (key.length <= 8) return key;
-        return key.substring(0, 4) + '********' + key.substring(key.length - 4);
+    detectErrorType(error) {
+        const message = error.message.toLowerCase();
+        if (message.includes('quota') || message.includes('rate limit')) {
+            return 'quota';
+        }
+        if (message.includes('invalid') || message.includes('unauthorized') || message.includes('forbidden')) {
+            return 'auth';
+        }
+        if (message.includes('timeout') || message.includes('逾時')) {
+            return 'timeout';
+        }
+        return 'unknown';
     }
 
     /**
@@ -408,12 +343,11 @@ class PromptToContextPlugin {
             ? Math.round(durations.reduce((a, b) => a + b, 0) / durations.length)
             : 0;
 
+        // 從統一管理器取得 API Key 統計
+        const apiKeyStats = this.apiKeyManager.getStats();
+
         return {
-            apiKeys: {
-                total: this.apiKeys.length,
-                active: this.apiKeys.filter(k => k.status === 'active').length,
-                error: this.apiKeys.filter(k => k.status === 'error').length
-            },
+            apiKeys: apiKeyStats,
             history: {
                 total: total,
                 success: success,
