@@ -1,0 +1,8 @@
+{
+  "name": "prompt-to-context-marketplace",
+  "version": "1.0.0",
+  "description": "Prompt-to-Context Plugin Marketplace",
+  "plugins": {
+    "prompt-to-context": "./claude-code"
+  }
+}

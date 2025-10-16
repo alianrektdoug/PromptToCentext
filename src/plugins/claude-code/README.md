@@ -16,18 +16,28 @@
 
 ## 🚀 安裝
 
-### 方法 1：從本地安裝
+### 快速安裝（推薦）
+
+在 Claude Code 中執行：
 
 ```bash
-# 在 Claude Code 中執行
-/plugin install path/to/PromptToCentext/src/plugins/claude-code
+/plugin install https://github.com/alianrektdoug/PromptToCentext/tree/master/src/plugins/claude-code
 ```
 
-### 方法 2：從 Git 安裝（如果您已推送到 GitHub）
+安裝完成後重啟 Claude Code，然後：
 
 ```bash
-/plugin install https://github.com/yourusername/PromptToCentext/tree/main/src/plugins/claude-code
+# 驗證安裝
+/plugin list
+
+# 新增 API Key
+/prompt-keys add YOUR_GEMINI_API_KEY
+
+# 測試轉換
+/convert 如何學習 JavaScript？
 ```
+
+> 💡 **遇到安裝問題？** 請查看詳細的 [安裝疑難排解指南](INSTALL.md)
 
 ### 安裝依賴
 
@@ -317,14 +327,13 @@ MIT License
 如有問題或建議，請：
 
 1. 查看 [疑難排解](#-疑難排解) 章節
-2. 提交 [Issue](https://github.com/yourusername/PromptToCentext/issues)
+2. 提交 [Issue](https://github.com/alianrektdoug/PromptToCentext/issues)
 3. 參考主專案 [README](../../../README.md)
 
 ## 🔗 相關連結
 
-- [主專案 Repository](https://github.com/yourusername/PromptToCentext)
-- [OpenSpec 文件](../../../openspec/)
-- [Web UI](../../index.html)
+- [主專案 Repository](https://github.com/alianrektdoug/PromptToCentext)
+- [Web UI Demo](https://alianrektdoug.github.io/PromptToCentext/)
 - [Gemini API 文件](https://ai.google.dev/docs)
 - [Claude Code 文件](https://docs.claude.com/claude-code)
 

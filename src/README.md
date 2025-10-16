@@ -49,13 +49,17 @@ PromptToCentext/
 ### 1. 取得程式碼
 
 ```bash
-git clone https://github.com/yourusername/PromptToCentext.git
-cd PromptToCentext/src
+git clone https://github.com/alianrektdoug/PromptToCentext.git
+cd PromptToCentext
 ```
 
 ### 2. 開啟 Web UI
 
-直接在瀏覽器開啟 `src/index.html` 即可使用！
+**方式 1：本地開啟**
+直接在瀏覽器開啟 `index.html` 即可使用！
+
+**方式 2：線上 Demo**
+訪問 GitHub Pages: https://alianrektdoug.github.io/PromptToCentext/
 
 ### 3. 配置 API Keys
 
@@ -72,21 +76,37 @@ cd PromptToCentext/src
 
 ## 🔌 Claude Code Plugin 安裝
 
-### 安裝步驟
+### 方法 1：從本地 Marketplace 安裝（推薦）
 
-1. 在 Claude Code 中執行：
+#### 步驟 1：新增 Marketplace
 ```bash
-/plugin install path/to/PromptToCentext/src/plugins/claude-code
+# Windows
+/plugin marketplace add C:/Users/YOUR_USERNAME/Desktop/github/PromptToCentext/src/plugins
+
+# macOS/Linux
+/plugin marketplace add /path/to/PromptToCentext/src/plugins
 ```
 
-2. 重啟 Claude Code
+#### 步驟 2：安裝 Plugin
+```bash
+/plugin install prompt-to-context
+```
 
-3. 使用 slash commands：
-   - `/convert <問題>` - 轉換單一問題
-   - `/convert-batch` - 批次轉換
-   - `/prompt-keys` - 管理 API keys
+### 方法 2：使用互動式菜單
 
-詳細說明請參閱 [Plugin 文件](src/plugins/claude-code/README.md)
+```bash
+/plugin
+```
+選擇「Add marketplace」→ 輸入 plugins 目錄路徑 → 「Browse Plugins」→ 安裝 `prompt-to-context`
+
+### 使用 Plugin
+
+安裝後可使用以下 slash commands：
+- `/convert <問題>` - 轉換單一問題
+- `/convert-batch` - 批次轉換
+- `/prompt-keys` - 管理 API keys
+
+詳細說明請參閱 [Plugin 安裝指南](plugins/claude-code/INSTALL.md) 和 [Plugin 文件](plugins/claude-code/README.md)
 
 ## 📖 OpenSpec 文件
 
@@ -185,8 +205,11 @@ npm run lint
 
 ## 📧 聯絡方式
 
-- Issue 追蹤: [GitHub Issues](https://github.com/yourusername/PromptToCentext/issues)
+- Issue 追蹤: [GitHub Issues](https://github.com/alianrektdoug/PromptToCentext/issues)
+- Repository: https://github.com/alianrektdoug/PromptToCentext
 
 ---
 
-**注意**: 主要專案程式碼位於 `src/` 目錄，OpenSpec 規格文件位於 `openspec/` 目錄（獨立）。
+**版本**: 1.1.0
+**最後更新**: 2025-10-16
+**作者**: alianrektdoug
