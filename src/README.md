@@ -78,26 +78,37 @@ cd PromptToCentext
 
 ### 方法 1：從本地 Marketplace 安裝（推薦）
 
-#### 步驟 1：新增 Marketplace
-```bash
-# Windows
-/plugin marketplace add C:/Users/YOUR_USERNAME/Desktop/github/PromptToCentext/src/plugins
+**重要**：必須先切換到專案根目錄，並使用相對路徑！
 
-# macOS/Linux
-/plugin marketplace add /path/to/PromptToCentext/src/plugins
+#### 步驟 1：切換到專案根目錄
+```bash
+cd C:\Users\YOUR_USERNAME\Desktop\github\PromptToCentext
 ```
 
-#### 步驟 2：安裝 Plugin
+#### 步驟 2：新增 Marketplace
+```bash
+/plugin marketplace add ./src/plugins
+```
+
+#### 步驟 3：安裝 Plugin
 ```bash
 /plugin install prompt-to-context
 ```
 
 ### 方法 2：使用互動式菜單
 
+#### 步驟 1：切換到專案根目錄
+```bash
+cd C:\Users\YOUR_USERNAME\Desktop\github\PromptToCentext
+```
+
+#### 步驟 2：開啟互動式菜單
 ```bash
 /plugin
 ```
-選擇「Add marketplace」→ 輸入 plugins 目錄路徑 → 「Browse Plugins」→ 安裝 `prompt-to-context`
+
+#### 步驟 3：新增 Marketplace 並安裝
+選擇「Add marketplace」→ 輸入 `./src/plugins` → 「Browse Plugins」→ 安裝 `prompt-to-context`
 
 ### 使用 Plugin
 

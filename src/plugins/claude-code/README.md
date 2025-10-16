@@ -18,16 +18,26 @@
 
 ### 快速安裝（推薦）
 
-在 Claude Code 中執行：
+**重要**：必須先切換到專案根目錄！
 
+#### 步驟 1：切換到專案根目錄
 ```bash
-/plugin install https://github.com/alianrektdoug/PromptToCentext/tree/master/src/plugins/claude-code
+cd C:\Users\YOUR_USERNAME\path\to\PromptToCentext
 ```
 
-安裝完成後重啟 Claude Code，然後：
-
+#### 步驟 2：新增 Marketplace
 ```bash
-# 驗證安裝
+/plugin marketplace add ./src/plugins
+```
+
+#### 步驟 3：安裝 Plugin
+```bash
+/plugin install prompt-to-context
+```
+
+#### 步驟 4：驗證安裝
+```bash
+# 確認 Plugin 已安裝
 /plugin list
 
 # 新增 API Key

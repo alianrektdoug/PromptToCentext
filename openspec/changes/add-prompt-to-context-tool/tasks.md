@@ -117,7 +117,7 @@
   - 統計資料 `data/stats.json`
   - 日誌目錄 `logs/`
 
-**驗證**: 使用 `/plugin install ./plugins/claude-code` 本地安裝，測試所有 slash commands
+**驗證**: 切換到專案根目錄，執行 `/plugin marketplace add ./src/plugins` 新增 marketplace，然後 `/plugin install prompt-to-context` 安裝，測試所有 slash commands
 
 ## 7. Plugin 文件和配置
 - [ ] 7.1 撰寫 `plugins/claude-code/README.md`

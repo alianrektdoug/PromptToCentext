@@ -179,7 +179,7 @@ Plugin 應提供清晰的安裝和使用文件。
 - **當** 使用者開啟 `README.md`
 - **則** 應包含以下章節：
   - **簡介**: Plugin 功能說明
-  - **安裝**: 使用 `/plugin install` 或手動安裝步驟
+  - **安裝**: 切換到專案根目錄，執行 `/plugin marketplace add ./src/plugins` 新增 marketplace，然後 `/plugin install prompt-to-context` 安裝
   - **配置**:
     - 如何新增 API keys
     - 如何配置選項
@@ -245,7 +245,7 @@ Plugin 應支援標準的安裝和發布流程。
 
 #### 情境：本地開發安裝
 - **當** 開發者想測試本地 plugin
-- **則** 應支援 `/plugin install ./path/to/plugin`
+- **則** 應支援使用相對路徑先新增 marketplace：`/plugin marketplace add ./src/plugins`，然後安裝：`/plugin install prompt-to-context`
 - **且** 應熱重載變更（開發模式）
 - **且** 應顯示開發模式標記
 
