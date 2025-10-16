@@ -1,8 +1,13 @@
 {
   "name": "prompt-to-context-marketplace",
-  "version": "1.0.0",
-  "description": "Prompt-to-Context Plugin Marketplace",
-  "plugins": {
-    "prompt-to-context": "./claude-code"
-  }
+  "owner": {
+    "name": "alianrektdoug"
+  },
+  "plugins": [
+    {
+      "name": "prompt-to-context",
+      "source": "./claude-code",
+      "description": "將簡單問題轉換為專業上下文提示詞的工具"
+    }
+  ]
 }

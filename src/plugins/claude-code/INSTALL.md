@@ -4,19 +4,23 @@
 
 ### 方式 1：從本地 Marketplace 安裝（最簡單）
 
-#### 步驟 1：新增 Marketplace
+**重要**：必須使用相對路徑 `./` 開頭！
 
-```bash
-/plugin marketplace add C:/Users/alian/Desktop/github/PromptToCentext/src/plugins
-```
+#### 步驟 1：切換到專案根目錄
 
-或使用相對路徑（需先 cd 到專案目錄）：
 ```bash
 cd C:\Users\alian\Desktop\github\PromptToCentext
+```
+
+請替換為您的實際專案路徑。
+
+#### 步驟 2：新增 Marketplace（使用相對路徑）
+
+```bash
 /plugin marketplace add ./src/plugins
 ```
 
-#### 步驟 2：安裝 Plugin
+#### 步驟 3：安裝 Plugin
 
 ```bash
 /plugin install prompt-to-context
@@ -40,28 +44,46 @@ cd C:\Users\alian\Desktop\github\PromptToCentext
 
 ### 方式 2：使用互動式菜單
 
+#### 步驟 1：切換到專案根目錄
+
+```bash
+cd C:\Users\alian\Desktop\github\PromptToCentext
+```
+
+#### 步驟 2：開啟互動式菜單
+
 ```bash
 /plugin
 ```
 
-選擇「Add marketplace」，然後輸入：
+#### 步驟 3：新增 Marketplace
+
+選擇「Add marketplace」，然後輸入相對路徑：
 ```
-C:/Users/alian/Desktop/github/PromptToCentext/src/plugins
+./src/plugins
 ```
 
-接著選擇「Browse Plugins」，找到 `prompt-to-context` 並安裝。
+#### 步驟 4：安裝 Plugin
+
+選擇「Browse Plugins」→ 找到 `prompt-to-context` → 安裝
 
 ---
 
 ### 方式 3：macOS / Linux 系統
 
-#### 步驟 1：新增 Marketplace
+#### 步驟 1：切換到專案根目錄
 
 ```bash
-/plugin marketplace add /Users/YOUR_USERNAME/path/to/PromptToCentext/src/plugins
+cd /Users/YOUR_USERNAME/path/to/PromptToCentext
 ```
 
-#### 步驟 2：安裝 Plugin
+#### 步驟 2：新增 Marketplace（使用相對路徑）
+
+```bash
+/plugin marketplace add ./src/plugins
+```
+
+#### 步驟 3：安裝 Plugin
 
 ```bash
 /plugin install prompt-to-context
@@ -131,12 +153,18 @@ No marketplaces configured.
 
 **解決方案**：
 
-1. **先新增 Marketplace**
+1. **必須先切換到專案根目錄**
    ```bash
-   /plugin marketplace add C:/Users/alian/Desktop/github/PromptToCentext/src/plugins
+   cd C:\Users\alian\Desktop\github\PromptToCentext
    ```
 
-2. **確認目錄結構**
+2. **使用相對路徑新增 Marketplace**
+   ```bash
+   /plugin marketplace add ./src/plugins
+   ```
+   **注意**：必須使用 `./` 開頭的相對路徑！
+
+3. **確認目錄結構**
    ```bash
    # 確認 marketplace.json 存在
    cat C:/Users/alian/Desktop/github/PromptToCentext/src/plugins/.claude-plugin/marketplace.json
@@ -157,9 +185,10 @@ No marketplaces configured.
        └── ...
    ```
 
-3. **使用完整絕對路徑**
-   - ✅ 正確：`C:/Users/alian/Desktop/github/PromptToCentext/src/plugins`
-   - ❌ 錯誤：`./src/plugins`（除非在專案根目錄）
+3. **路徑格式說明**
+   - ✅ 正確：`./src/plugins`（在專案根目錄時）
+   - ❌ 錯誤：`C:/Users/.../src/plugins`（絕對路徑不支援）
+   - ❌ 錯誤：`../plugins`（上層目錄路徑）
    - ❌ 錯誤：直接指向 plugin 目錄（應該指向 marketplace 目錄）
 
 4. **驗證 Marketplace**
