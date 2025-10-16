@@ -74,19 +74,30 @@ cd PromptToCentext/src
 
 ### 安裝步驟
 
-1. 在 Claude Code 中執行：
+**重要**：必須先切換到專案根目錄，並使用相對路徑！
+
+#### 步驟 1：切換到專案根目錄
 ```bash
-/plugin install path/to/PromptToCentext/src/plugins/claude-code
+cd C:\Users\YOUR_USERNAME\path\to\PromptToCentext
 ```
 
-2. 重啟 Claude Code
+#### 步驟 2：新增 Marketplace
+```bash
+/plugin marketplace add ./src/plugins
+```
 
-3. 使用 slash commands：
-   - `/convert <問題>` - 轉換單一問題
-   - `/convert-batch` - 批次轉換
-   - `/prompt-keys` - 管理 API keys
+#### 步驟 3：安裝 Plugin
+```bash
+/plugin install prompt-to-context
+```
 
-詳細說明請參閱 [Plugin 文件](src/plugins/claude-code/README.md)
+#### 步驟 4：使用 Plugin
+安裝完成後，可使用以下 slash commands：
+- `/convert <問題>` - 轉換單一問題
+- `/convert-batch` - 批次轉換
+- `/prompt-keys` - 管理 API keys
+
+詳細說明請參閱 [Plugin 安裝指南](src/plugins/claude-code/INSTALL.md) 和 [Plugin 文件](src/plugins/claude-code/README.md)
 
 ## 📖 OpenSpec 文件
 
