@@ -1,0 +1,24 @@
+{
+  "gemini": {
+    "baseUrl": "https://generativelanguage.googleapis.com/v1beta",
+    "model": "gemini-1.5-flash",
+    "timeout": 30000,
+    "maxRetries": 3
+  },
+  "storage": {
+    "apiKeysFile": "data/api-keys.json",
+    "historyFile": "data/history.json",
+    "templatesFile": "data/templates.json"
+  },
+  "logging": {
+    "enabled": true,
+    "level": "info",
+    "logFile": "logs/plugin.log"
+  },
+  "limits": {
+    "maxApiKeys": 5,
+    "maxHistoryItems": 100,
+    "maxInputLength": 10000,
+    "maxOutputLength": 20000
+  }
+}

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="將簡單問題轉換為專業上下文提示詞的智慧工具">
+    <title>Prompt-to-Context 轉換工具</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dark-theme.css">
+</head>
+<body>
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 標題列 -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="icon">🎯</span>
+                    Prompt-to-Context
+                </h1>
+                <div class="header-actions">
+                    <button id="theme-toggle" class="btn-icon" title="切換深色模式">
+                        <span class="icon">🌙</span>
+                    </button>
+                    <button id="history-btn" class="btn-icon" title="歷史記錄 (Ctrl+H)">
+                        <span class="icon">📝</span>
+                    </button>
+                    <button id="template-btn" class="btn-icon" title="範本庫">
+                        <span class="icon">📚</span>
+                    </button>
+                    <button id="settings-btn" class="btn-icon" title="設定">
+                        <span class="icon">⚙️</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要內容區 -->
+        <main class="main-content">
+            <!-- 輸入區域 -->
+            <section class="input-section">
+                <div class="section-header">
+                    <h2>輸入問題</h2>
+                    <span id="char-count" class="char-count">0 字元</span>
+                </div>
+                <textarea
+                    id="input-text"
+                    class="input-textarea"
+                    placeholder="在此輸入您的問題...&#10;&#10;例如：如何學習 JavaScript？"
+                    rows="6"
+                ></textarea>
+                <div class="input-actions">
+                    <button id="clear-btn" class="btn btn-secondary">
+                        <span class="icon">🗑️</span>
+                        清除
+                    </button>
+                    <button id="template-quick-btn" class="btn btn-secondary">
+                        <span class="icon">📋</span>
+                        選擇範本
+                    </button>
+                    <button id="convert-btn" class="btn btn-primary">
+                        <span class="icon">✨</span>
+                        轉換提示詞
+                        <span class="shortcut">(Ctrl+Enter)</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- API Key 管理面板 -->
+            <section class="api-key-section" id="api-key-panel">
+                <div class="section-header clickable" id="api-key-header">
+                    <h3>
+                        <span class="icon">🔑</span>
+                        API Key 管理
+                        <span class="shortcut">(Ctrl+K)</span>
+                    </h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="api-key-content" id="api-key-content">
+                    <div class="api-key-list" id="api-key-list">
+                        <!-- API keys 將動態加載到這裡 -->
+                        <div class="api-key-empty">
+                            <p>尚未設定 API Key</p>
+                            <p class="hint">請新增至少一個 Gemini API Key 以開始使用</p>
+                        </div>
+                    </div>
+                    <div class="api-key-add">
+                        <input
+                            type="text"
+                            id="new-api-key"
+                            class="input-text"
+                            placeholder="輸入 Gemini API Key (以 AIza 開頭)"
+                        >
+                        <button id="add-key-btn" class="btn btn-primary">
+                            <span class="icon">➕</span>
+                            新增 Key
+                        </button>
+                    </div>
+                    <div class="api-key-info">
+                        <p>💡 提示：可新增最多 5 組 API Keys，系統會自動輪替使用</p>
+                        <p>🔒 所有 Keys 都會加密儲存在本地</p>
+                        <a href="https://makersuite.google.com/app/apikey" target="_blank" rel="noopener">
+                            取得 Gemini API Key →
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 結果區域 -->
+            <section class="output-section" id="output-section" style="display: none;">
+                <div class="section-header">
+                    <h2>轉換結果</h2>
+                    <div class="output-actions">
+                        <button id="copy-btn" class="btn btn-secondary">
+                            <span class="icon">📋</span>
+                            複製
+                        </button>
+                        <button id="export-btn" class="btn btn-secondary">
+                            <span class="icon">💾</span>
+                            匯出
+                        </button>
+                        <button id="save-history-btn" class="btn btn-secondary">
+                            <span class="icon">⭐</span>
+                            收藏
+                        </button>
+                    </div>
+                </div>
+                <div id="output-text" class="output-content">
+                    <!-- 轉換結果將顯示在這裡 -->
+                </div>
+                <div class="output-meta" id="output-meta">
+                    <!-- 元資料：執行時間、使用的 key 等 -->
+                </div>
+            </section>
+
+            <!-- 載入狀態 -->
+            <div class="loading-overlay" id="loading-overlay" style="display: none;">
+                <div class="loading-content">
+                    <div class="spinner"></div>
+                    <p>正在轉換中...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- 頁尾 -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>
+                    <span class="icon">🎯</span>
+                    Prompt-to-Context v1.0.0
+                </p>
+                <p>
+                    使用 <a href="https://ai.google.dev/" target="_blank" rel="noopener">Gemini API</a> 驅動
+                </p>
+                <p class="shortcuts-hint">
+                    快捷鍵提示：
+                    <kbd>Ctrl+Enter</kbd> 轉換 |
+                    <kbd>Ctrl+K</kbd> API Keys |
+                    <kbd>Ctrl+H</kbd> 歷史記錄
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 側邊欄：歷史記錄 -->
+    <aside class="sidebar sidebar-right" id="history-sidebar">
+        <div class="sidebar-header">
+            <h2>
+                <span class="icon">📝</span>
+                歷史記錄
+            </h2>
+            <button class="btn-close" id="history-close">✕</button>
+        </div>
+        <div class="sidebar-toolbar">
+            <input
+                type="text"
+                id="history-search"
+                class="input-text input-sm"
+                placeholder="搜尋歷史..."
+            >
+            <select id="history-filter" class="select-sm">
+                <option value="all">全部</option>
+                <option value="success">僅成功</option>
+                <option value="failed">僅失敗</option>
+                <option value="starred">僅收藏</option>
+            </select>
+        </div>
+        <div class="sidebar-content" id="history-list">
+            <!-- 歷史記錄將動態加載到這裡 -->
+            <div class="empty-state">
+                <p>尚無歷史記錄</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 側邊欄：範本庫 -->
+    <aside class="sidebar sidebar-left" id="template-sidebar">
+        <div class="sidebar-header">
+            <h2>
+                <span class="icon">📚</span>
+                範本庫
+            </h2>
+            <button class="btn-close" id="template-close">✕</button>
+        </div>
+        <div class="sidebar-toolbar">
+            <input
+                type="text"
+                id="template-search"
+                class="input-text input-sm"
+                placeholder="搜尋範本..."
+            >
+            <select id="template-category" class="select-sm">
+                <option value="all">所有類別</option>
+                <option value="coding">程式開發</option>
+                <option value="technical">技術文件</option>
+                <option value="learning">學習教學</option>
+                <option value="creative">創意寫作</option>
+                <option value="business">商業分析</option>
+            </select>
+        </div>
+        <div class="sidebar-content" id="template-list">
+            <!-- 範本將動態加載到這裡 -->
+        </div>
+    </aside>
+
+    <!-- 側邊欄：設定 -->
+    <aside class="sidebar sidebar-right" id="settings-sidebar">
+        <div class="sidebar-header">
+            <h2>
+                <span class="icon">⚙️</span>
+                設定
+            </h2>
+            <button class="btn-close" id="settings-close">✕</button>
+        </div>
+        <div class="sidebar-content">
+            <!-- 儲存空間資訊 -->
+            <div class="settings-section">
+                <h3 class="settings-title">💾 儲存空間</h3>
+                <div class="storage-info" id="storage-info">
+                    <div class="storage-bar">
+                        <div class="storage-used" id="storage-used-bar" style="width: 0%"></div>
+                    </div>
+                    <p id="storage-text">載入中...</p>
+                </div>
+            </div>
+
+            <!-- 資料管理 -->
+            <div class="settings-section">
+                <h3 class="settings-title">🗂️ 資料管理</h3>
+                <button class="btn btn-secondary btn-full" onclick="app.exportAllData()">
+                    <span class="icon">📤</span>
+                    匯出所有資料
+                </button>
+                <button class="btn btn-secondary btn-full" onclick="app.importAllData()">
+                    <span class="icon">📥</span>
+                    匯入資料
+                </button>
+                <button class="btn btn-secondary btn-full" onclick="app.clearHistory()">
+                    <span class="icon">🗑️</span>
+                    清除歷史記錄
+                </button>
+                <button class="btn btn-secondary btn-full" onclick="app.clearAllData()">
+                    <span class="icon">⚠️</span>
+                    清除所有資料
+                </button>
+            </div>
+
+            <!-- 關於 -->
+            <div class="settings-section">
+                <h3 class="settings-title">ℹ️ 關於</h3>
+                <div class="about-info">
+                    <p><strong>版本</strong>: 1.0.0</p>
+                    <p><strong>更新日期</strong>: 2025-10-16</p>
+                    <p><strong>專案</strong>: Prompt-to-Context</p>
+                    <p><strong>技術</strong>: Vanilla JS + Gemini API</p>
+                    <p style="margin-top: var(--spacing-md);">
+                        <a href="https://github.com/yourusername/PromptToCentext" target="_blank" rel="noopener">
+                            📚 檢視專案文件
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 通知 Toast -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- 對話框容器 -->
+    <div class="modal-container" id="modal-container"></div>
+
+    <!-- JavaScript -->
+    <script src="js/utils/storage.js"></script>
+    <script src="js/utils/crypto.js"></script>
+    <script src="js/utils/validators.js"></script>
+    <script src="js/lib/api-manager.js"></script>
+    <script src="js/lib/gemini-client.js"></script>
+    <script src="js/lib/template-manager.js"></script>
+    <script src="js/lib/history-manager.js"></script>
+    <script src="js/lib/export-manager.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

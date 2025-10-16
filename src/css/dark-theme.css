@@ -1,0 +1,372 @@
+/* ========================================
+   Prompt-to-Context 轉換工具 - 深色主題
+   ======================================== */
+
+/* 深色模式 CSS Variables */
+body.dark-mode {
+    /* 主色調 - 稍微調亮以在深色背景上更明顯 */
+    --primary-color: #6366F1;
+    --primary-hover: #818CF8;
+    --primary-light: #1E293B;
+
+    /* 背景色 - 深色系 */
+    --bg-primary: #1F2937;
+    --bg-secondary: #111827;
+    --bg-tertiary: #374151;
+
+    /* 文字色 - 淺色系 */
+    --text-primary: #F9FAFB;
+    --text-secondary: #D1D5DB;
+    --text-tertiary: #9CA3AF;
+
+    /* 邊框色 - 深色系 */
+    --border-color: #374151;
+    --border-focus: #6366F1;
+
+    /* 狀態色 - 調亮 */
+    --success-color: #34D399;
+    --warning-color: #FBBF24;
+    --error-color: #F87171;
+    --info-color: #60A5FA;
+
+    /* 陰影 - 深色版本 */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+}
+
+/* ==================== 深色模式特殊調整 ==================== */
+
+/* 輸入框和文本區域 */
+body.dark-mode .input-textarea,
+body.dark-mode .input-text {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+body.dark-mode .input-textarea:focus,
+body.dark-mode .input-text:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+body.dark-mode .input-textarea::placeholder,
+body.dark-mode .input-text::placeholder {
+    color: var(--text-tertiary);
+}
+
+/* 按鈕 */
+body.dark-mode .btn-primary {
+    background: var(--primary-color);
+    color: var(--text-primary);
+}
+
+body.dark-mode .btn-primary:hover {
+    background: var(--primary-hover);
+}
+
+body.dark-mode .btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+body.dark-mode .btn-secondary:hover {
+    background: #4B5563;
+}
+
+body.dark-mode .btn-icon {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+body.dark-mode .btn-icon:hover {
+    background: #4B5563;
+    border-color: var(--primary-color);
+}
+
+/* API Key 項目 */
+body.dark-mode .api-key-item {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .api-key-value {
+    color: var(--text-secondary);
+}
+
+/* API Key 內容區域滾輪 - 深色模式 */
+body.dark-mode .api-key-content::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+}
+
+body.dark-mode .api-key-content::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+}
+
+body.dark-mode .api-key-content::-webkit-scrollbar-thumb:hover {
+    background: #4B5563;
+}
+
+body.dark-mode .api-key-content {
+    scrollbar-color: var(--border-color) var(--bg-tertiary);
+}
+
+/* 輸出內容 */
+body.dark-mode .output-content {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+body.dark-mode .output-meta {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+}
+
+/* 載入覆蓋層 */
+body.dark-mode .loading-overlay {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .loading-content {
+    background: var(--bg-primary);
+}
+
+body.dark-mode .spinner {
+    border-color: var(--border-color);
+    border-top-color: var(--primary-color);
+}
+
+/* 側邊欄 */
+body.dark-mode .sidebar {
+    background: var(--bg-primary);
+}
+
+body.dark-mode .sidebar-header,
+body.dark-mode .sidebar-toolbar {
+    border-color: var(--border-color);
+}
+
+body.dark-mode .btn-close {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+}
+
+body.dark-mode .btn-close:hover {
+    background: var(--error-color);
+    color: var(--text-primary);
+}
+
+body.dark-mode .select-sm {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+/* Toast 通知 */
+body.dark-mode .toast {
+    background: var(--bg-primary);
+    box-shadow: var(--shadow-lg);
+}
+
+body.dark-mode .toast.success {
+    border-left-color: var(--success-color);
+}
+
+body.dark-mode .toast.error {
+    border-left-color: var(--error-color);
+}
+
+body.dark-mode .toast.warning {
+    border-left-color: var(--warning-color);
+}
+
+body.dark-mode .toast.info {
+    border-left-color: var(--info-color);
+}
+
+/* 對話框 */
+body.dark-mode .modal-container {
+    background: transparent;  /* 移除深色模式遮罩 */
+}
+
+body.dark-mode .modal {
+    background: var(--bg-primary);
+}
+
+body.dark-mode .modal-header,
+body.dark-mode .modal-footer {
+    border-color: var(--border-color);
+}
+
+/* 鍵盤快捷鍵標記 */
+body.dark-mode kbd {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+/* 連結 */
+body.dark-mode a {
+    color: var(--primary-color);
+}
+
+body.dark-mode a:hover {
+    color: var(--primary-hover);
+}
+
+/* 空狀態 */
+body.dark-mode .empty-state,
+body.dark-mode .api-key-empty {
+    color: var(--text-secondary);
+}
+
+body.dark-mode .api-key-empty .hint {
+    color: var(--text-tertiary);
+}
+
+/* 頁尾 */
+body.dark-mode .footer {
+    color: var(--text-secondary);
+}
+
+/* ==================== 主題切換動畫 ==================== */
+body {
+    transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+.header,
+.input-section,
+.output-section,
+.api-key-section,
+.sidebar,
+.modal,
+.toast,
+.loading-content {
+    transition: background-color var(--transition-normal),
+                border-color var(--transition-normal),
+                color var(--transition-normal);
+}
+
+.input-textarea,
+.input-text,
+.output-content,
+.api-key-item,
+.btn,
+.btn-icon,
+kbd {
+    transition: background-color var(--transition-normal),
+                border-color var(--transition-normal),
+                color var(--transition-normal);
+}
+
+/* ==================== 深色模式特定樣式優化 ==================== */
+
+/* 增強對比度 */
+body.dark-mode .section-header h2,
+body.dark-mode .section-header h3 {
+    color: var(--text-primary);
+}
+
+/* 代碼區塊增強（用於輸出內容） */
+body.dark-mode .output-content code {
+    background: var(--bg-tertiary);
+    padding: 0.125rem 0.375rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+}
+
+/* 捲軸樣式 */
+body.dark-mode ::-webkit-scrollbar {
+    width: 12px;
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #4B5563;
+}
+
+/* Firefox 捲軸 */
+body.dark-mode * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg-tertiary) var(--bg-secondary);
+}
+
+/* ==================== 深色模式圖標顏色調整 ==================== */
+body.dark-mode .icon {
+    filter: brightness(1.1);
+}
+
+/* ==================== 深色模式焦點狀態優化 ==================== */
+body.dark-mode *:focus-visible {
+    outline-color: var(--primary-color);
+}
+
+/* ==================== 深色模式選取文字樣式 ==================== */
+body.dark-mode ::selection {
+    background: rgba(99, 102, 241, 0.3);
+    color: var(--text-primary);
+}
+
+body.dark-mode ::-moz-selection {
+    background: rgba(99, 102, 241, 0.3);
+    color: var(--text-primary);
+}
+
+/* ==================== 深色模式陰影增強 ==================== */
+body.dark-mode .header,
+body.dark-mode .input-section,
+body.dark-mode .output-section,
+body.dark-mode .api-key-section {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+                0 2px 4px -1px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* ==================== 深色模式禁用狀態 ==================== */
+body.dark-mode .btn:disabled,
+body.dark-mode .input-text:disabled,
+body.dark-mode .input-textarea:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ==================== 深色模式加載狀態文字 ==================== */
+body.dark-mode .loading-content p {
+    color: var(--text-primary);
+}
+
+/* ==================== 響應式深色模式調整 ==================== */
+@media (max-width: 768px) {
+    /* 在小螢幕上，深色模式的對比度需要更高 */
+    body.dark-mode {
+        --text-primary: #FFFFFF;
+        --text-secondary: #E5E7EB;
+    }
+}
+
+/* ==================== 深色模式平滑過渡 ==================== */
+@media (prefers-reduced-motion: no-preference) {
+    body.dark-mode * {
+        transition-duration: var(--transition-normal);
+    }
+}
+
+/* 尊重使用者的系統偏好設定 */
+@media (prefers-reduced-motion: reduce) {
+    body.dark-mode * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
