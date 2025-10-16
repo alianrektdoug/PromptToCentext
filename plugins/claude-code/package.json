@@ -1,0 +1,23 @@
+{
+  "name": "prompt-to-context-plugin",
+  "version": "1.0.0",
+  "description": "Claude Code plugin for Prompt-to-Context conversion tool",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "claude-code",
+    "plugin",
+    "prompt",
+    "context"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  }
+}
