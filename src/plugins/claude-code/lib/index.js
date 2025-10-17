@@ -197,7 +197,13 @@ class PromptToContextPlugin {
      * 發送 API 請求
      */
     async makeRequest(apiKey, body) {
-        const url = `${this.config.gemini.baseUrl}/models/${this.config.gemini.model}:generateContent?key=${apiKey}`;
+        // 支援新的 endpoint 格式或舊的 baseUrl 格式
+        let url;
+        if (this.config.gemini.endpoint) {
+            url = `${this.config.gemini.endpoint}?key=${apiKey}`;
+        } else {
+            url = `${this.config.gemini.baseUrl}/models/${this.config.gemini.model}:generateContent?key=${apiKey}`;
+        }
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), this.config.gemini.timeout);

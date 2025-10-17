@@ -46,3 +46,8 @@ src/plugins/claude-code/data/
 plugins/claude-code/data/
 **/data/api-keys.json
 **/data/keys.json
+**/data/history.json
+
+# Project documentation and specs (managed separately)
+openspec/
+docs/
